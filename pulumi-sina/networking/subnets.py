@@ -1,6 +1,6 @@
 import pulumi_aws as aws
 
-from vpc import ig, vpc
+from networking.vpc import ig, vpc
 
 
 def associate_subnet_with_route_table(subnet: aws.ec2.subnet,
