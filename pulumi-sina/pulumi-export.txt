@@ -1,0 +1,1120 @@
+{
+    "version": 3,
+    "deployment": {
+        "manifest": {
+            "time": "2022-03-17T00:18:05.146681675+01:00",
+            "magic": "3941cd8d8f96d38ddb61c5e4d852cb2b8f303c21d4cb1800bbf01ef47779cdfa",
+            "version": "v3.26.1"
+        },
+        "secrets_providers": {
+            "type": "service",
+            "state": {
+                "url": "https://api.pulumi.com",
+                "owner": "Smokopyrka",
+                "project": "pulumi-sina",
+                "stack": "dev"
+            }
+        },
+        "resources": [
+            {
+                "urn": "urn:pulumi:dev::pulumi-sina::pulumi:pulumi:Stack::pulumi-sina-dev",
+                "custom": false,
+                "type": "pulumi:pulumi:Stack",
+                "outputs": {
+                    "Application Load Balancer DNS name": "sina-elb-95441b5-1566607230.eu-central-1.elb.amazonaws.com"
+                },
+                "sequenceNumber": 1
+            },
+            {
+                "urn": "urn:pulumi:dev::pulumi-sina::pulumi:providers:aws::default",
+                "custom": true,
+                "id": "00bde8fa-753d-4997-b826-8f0af1700709",
+                "type": "pulumi:providers:aws",
+                "inputs": {
+                    "region": "eu-central-1",
+                    "version": "4.38.1"
+                },
+                "outputs": {
+                    "region": "eu-central-1",
+                    "version": "4.38.1"
+                },
+                "sequenceNumber": 1
+            },
+            {
+                "urn": "urn:pulumi:dev::pulumi-sina::pulumi:providers:aws::default_4_38_1",
+                "custom": true,
+                "id": "c50592f3-97a2-42a5-affe-cc7f047cc88d",
+                "type": "pulumi:providers:aws",
+                "inputs": {
+                    "region": "eu-central-1",
+                    "version": "4.38.1"
+                },
+                "outputs": {
+                    "region": "eu-central-1",
+                    "version": "4.38.1"
+                },
+                "sequenceNumber": 1
+            },
+            {
+                "urn": "urn:pulumi:dev::pulumi-sina::aws:ec2/vpc:Vpc::sina-vpc",
+                "custom": true,
+                "id": "vpc-0b23dcaee7405a034",
+                "type": "aws:ec2/vpc:Vpc",
+                "inputs": {
+                    "__defaults": [
+                        "enableDnsSupport",
+                        "instanceTenancy"
+                    ],
+                    "cidrBlock": "10.0.0.0/16",
+                    "enableDnsSupport": true,
+                    "instanceTenancy": "default"
+                },
+                "outputs": {
+                    "__meta": "{\"schema_version\":\"1\"}",
+                    "arn": "arn:aws:ec2:eu-central-1:814824721268:vpc/vpc-0b23dcaee7405a034",
+                    "assignGeneratedIpv6CidrBlock": false,
+                    "cidrBlock": "10.0.0.0/16",
+                    "defaultNetworkAclId": "acl-0ee9c8f6a16266e21",
+                    "defaultRouteTableId": "rtb-0d361b4e730fd96e3",
+                    "defaultSecurityGroupId": "sg-04f5bcac7cebcba94",
+                    "dhcpOptionsId": "dopt-e8066982",
+                    "enableClassiclink": false,
+                    "enableClassiclinkDnsSupport": false,
+                    "enableDnsHostnames": false,
+                    "enableDnsSupport": true,
+                    "id": "vpc-0b23dcaee7405a034",
+                    "instanceTenancy": "default",
+                    "ipv6AssociationId": "",
+                    "ipv6CidrBlock": "",
+                    "ipv6CidrBlockNetworkBorderGroup": "",
+                    "ipv6IpamPoolId": "",
+                    "ipv6NetmaskLength": 0,
+                    "mainRouteTableId": "rtb-0d361b4e730fd96e3",
+                    "ownerId": "814824721268",
+                    "tags": {},
+                    "tagsAll": {}
+                },
+                "parent": "urn:pulumi:dev::pulumi-sina::pulumi:pulumi:Stack::pulumi-sina-dev",
+                "provider": "urn:pulumi:dev::pulumi-sina::pulumi:providers:aws::default_4_38_1::c50592f3-97a2-42a5-affe-cc7f047cc88d",
+                "propertyDependencies": {
+                    "cidrBlock": null
+                },
+                "sequenceNumber": 1
+            },
+            {
+                "urn": "urn:pulumi:dev::pulumi-sina::aws:ec2/securityGroup:SecurityGroup::sina-sg",
+                "custom": true,
+                "id": "sg-06ee1c58d7df75c4b",
+                "type": "aws:ec2/securityGroup:SecurityGroup",
+                "inputs": {
+                    "__defaults": [
+                        "name",
+                        "revokeRulesOnDelete"
+                    ],
+                    "description": "Allow http and https traffic from the instance",
+                    "egress": [
+                        {
+                            "__defaults": [
+                                "self"
+                            ],
+                            "cidrBlocks": [
+                                "0.0.0.0/0"
+                            ],
+                            "description": "Anything to VPC",
+                            "fromPort": 0,
+                            "ipv6CidrBlocks": [
+                                "::/0"
+                            ],
+                            "protocol": "-1",
+                            "self": false,
+                            "toPort": 0
+                        }
+                    ],
+                    "ingress": [
+                        {
+                            "__defaults": [
+                                "self"
+                            ],
+                            "cidrBlocks": [
+                                "0.0.0.0/0"
+                            ],
+                            "description": "HTTP from VPC",
+                            "fromPort": 80,
+                            "ipv6CidrBlocks": [
+                                "::/0"
+                            ],
+                            "protocol": "tcp",
+                            "self": false,
+                            "toPort": 80
+                        },
+                        {
+                            "__defaults": [
+                                "self"
+                            ],
+                            "cidrBlocks": [
+                                "0.0.0.0/0"
+                            ],
+                            "description": "HTTPS from VPC",
+                            "fromPort": 443,
+                            "ipv6CidrBlocks": [
+                                "::/0"
+                            ],
+                            "protocol": "tcp",
+                            "self": false,
+                            "toPort": 443
+                        }
+                    ],
+                    "name": "sina-sg-5b494e4",
+                    "revokeRulesOnDelete": false,
+                    "tags": {
+                        "Name": "Allow HTTP and HTTPS",
+                        "__defaults": []
+                    },
+                    "vpcId": "vpc-0b23dcaee7405a034"
+                },
+                "outputs": {
+                    "__meta": "{\"e2bfb730-ecaa-11e6-8f88-34363bc7c4c0\":{\"create\":600000000000,\"delete\":900000000000},\"schema_version\":\"1\"}",
+                    "arn": "arn:aws:ec2:eu-central-1:814824721268:security-group/sg-06ee1c58d7df75c4b",
+                    "description": "Allow http and https traffic from the instance",
+                    "egress": [
+                        {
+                            "cidrBlocks": [
+                                "0.0.0.0/0"
+                            ],
+                            "description": "Anything to VPC",
+                            "fromPort": 0,
+                            "ipv6CidrBlocks": [
+                                "::/0"
+                            ],
+                            "prefixListIds": [],
+                            "protocol": "-1",
+                            "securityGroups": [],
+                            "self": false,
+                            "toPort": 0
+                        }
+                    ],
+                    "id": "sg-06ee1c58d7df75c4b",
+                    "ingress": [
+                        {
+                            "cidrBlocks": [
+                                "0.0.0.0/0"
+                            ],
+                            "description": "HTTP from VPC",
+                            "fromPort": 80,
+                            "ipv6CidrBlocks": [
+                                "::/0"
+                            ],
+                            "prefixListIds": [],
+                            "protocol": "tcp",
+                            "securityGroups": [],
+                            "self": false,
+                            "toPort": 80
+                        },
+                        {
+                            "cidrBlocks": [
+                                "0.0.0.0/0"
+                            ],
+                            "description": "HTTPS from VPC",
+                            "fromPort": 443,
+                            "ipv6CidrBlocks": [
+                                "::/0"
+                            ],
+                            "prefixListIds": [],
+                            "protocol": "tcp",
+                            "securityGroups": [],
+                            "self": false,
+                            "toPort": 443
+                        }
+                    ],
+                    "name": "sina-sg-5b494e4",
+                    "namePrefix": "",
+                    "ownerId": "814824721268",
+                    "revokeRulesOnDelete": false,
+                    "tags": {
+                        "Name": "Allow HTTP and HTTPS"
+                    },
+                    "tagsAll": {
+                        "Name": "Allow HTTP and HTTPS"
+                    },
+                    "vpcId": "vpc-0b23dcaee7405a034"
+                },
+                "parent": "urn:pulumi:dev::pulumi-sina::pulumi:pulumi:Stack::pulumi-sina-dev",
+                "dependencies": [
+                    "urn:pulumi:dev::pulumi-sina::aws:ec2/vpc:Vpc::sina-vpc"
+                ],
+                "provider": "urn:pulumi:dev::pulumi-sina::pulumi:providers:aws::default_4_38_1::c50592f3-97a2-42a5-affe-cc7f047cc88d",
+                "propertyDependencies": {
+                    "description": null,
+                    "egress": null,
+                    "ingress": null,
+                    "tags": null,
+                    "vpcId": [
+                        "urn:pulumi:dev::pulumi-sina::aws:ec2/vpc:Vpc::sina-vpc"
+                    ]
+                },
+                "sequenceNumber": 1
+            },
+            {
+                "urn": "urn:pulumi:dev::pulumi-sina::aws:ec2/internetGateway:InternetGateway::sina-ig",
+                "custom": true,
+                "id": "igw-0e5dff89d8688b865",
+                "type": "aws:ec2/internetGateway:InternetGateway",
+                "inputs": {
+                    "__defaults": [],
+                    "tags": {
+                        "Name": "SinaInternetGateway",
+                        "__defaults": []
+                    },
+                    "vpcId": "vpc-0b23dcaee7405a034"
+                },
+                "outputs": {
+                    "arn": "arn:aws:ec2:eu-central-1:814824721268:internet-gateway/igw-0e5dff89d8688b865",
+                    "id": "igw-0e5dff89d8688b865",
+                    "ownerId": "814824721268",
+                    "tags": {
+                        "Name": "SinaInternetGateway"
+                    },
+                    "tagsAll": {
+                        "Name": "SinaInternetGateway"
+                    },
+                    "vpcId": "vpc-0b23dcaee7405a034"
+                },
+                "parent": "urn:pulumi:dev::pulumi-sina::pulumi:pulumi:Stack::pulumi-sina-dev",
+                "dependencies": [
+                    "urn:pulumi:dev::pulumi-sina::aws:ec2/vpc:Vpc::sina-vpc"
+                ],
+                "provider": "urn:pulumi:dev::pulumi-sina::pulumi:providers:aws::default_4_38_1::c50592f3-97a2-42a5-affe-cc7f047cc88d",
+                "propertyDependencies": {
+                    "tags": null,
+                    "vpcId": [
+                        "urn:pulumi:dev::pulumi-sina::aws:ec2/vpc:Vpc::sina-vpc"
+                    ]
+                },
+                "sequenceNumber": 1
+            },
+            {
+                "urn": "urn:pulumi:dev::pulumi-sina::aws:ec2/subnet:Subnet::sina-private-subnet-1",
+                "custom": true,
+                "id": "subnet-03f50f1ffa82972d7",
+                "type": "aws:ec2/subnet:Subnet",
+                "inputs": {
+                    "__defaults": [
+                        "assignIpv6AddressOnCreation",
+                        "enableDns64",
+                        "enableResourceNameDnsARecordOnLaunch",
+                        "enableResourceNameDnsAaaaRecordOnLaunch",
+                        "ipv6Native",
+                        "mapPublicIpOnLaunch"
+                    ],
+                    "assignIpv6AddressOnCreation": false,
+                    "availabilityZone": "eu-central-1a",
+                    "cidrBlock": "10.0.0.0/24",
+                    "enableDns64": false,
+                    "enableResourceNameDnsARecordOnLaunch": false,
+                    "enableResourceNameDnsAaaaRecordOnLaunch": false,
+                    "ipv6Native": false,
+                    "mapPublicIpOnLaunch": false,
+                    "vpcId": "vpc-0b23dcaee7405a034"
+                },
+                "outputs": {
+                    "__meta": "{\"e2bfb730-ecaa-11e6-8f88-34363bc7c4c0\":{\"create\":600000000000,\"delete\":1200000000000},\"schema_version\":\"1\"}",
+                    "arn": "arn:aws:ec2:eu-central-1:814824721268:subnet/subnet-03f50f1ffa82972d7",
+                    "assignIpv6AddressOnCreation": false,
+                    "availabilityZone": "eu-central-1a",
+                    "availabilityZoneId": "euc1-az2",
+                    "cidrBlock": "10.0.0.0/24",
+                    "customerOwnedIpv4Pool": "",
+                    "enableDns64": false,
+                    "enableResourceNameDnsARecordOnLaunch": false,
+                    "enableResourceNameDnsAaaaRecordOnLaunch": false,
+                    "id": "subnet-03f50f1ffa82972d7",
+                    "ipv6CidrBlock": "",
+                    "ipv6CidrBlockAssociationId": "",
+                    "ipv6Native": false,
+                    "mapCustomerOwnedIpOnLaunch": false,
+                    "mapPublicIpOnLaunch": false,
+                    "outpostArn": "",
+                    "ownerId": "814824721268",
+                    "privateDnsHostnameTypeOnLaunch": "ip-name",
+                    "tags": {},
+                    "tagsAll": {},
+                    "vpcId": "vpc-0b23dcaee7405a034"
+                },
+                "parent": "urn:pulumi:dev::pulumi-sina::pulumi:pulumi:Stack::pulumi-sina-dev",
+                "dependencies": [
+                    "urn:pulumi:dev::pulumi-sina::aws:ec2/vpc:Vpc::sina-vpc"
+                ],
+                "provider": "urn:pulumi:dev::pulumi-sina::pulumi:providers:aws::default_4_38_1::c50592f3-97a2-42a5-affe-cc7f047cc88d",
+                "propertyDependencies": {
+                    "availabilityZone": null,
+                    "cidrBlock": null,
+                    "vpcId": [
+                        "urn:pulumi:dev::pulumi-sina::aws:ec2/vpc:Vpc::sina-vpc"
+                    ]
+                },
+                "sequenceNumber": 1
+            },
+            {
+                "urn": "urn:pulumi:dev::pulumi-sina::aws:ec2/subnet:Subnet::sina-private-subnet-2",
+                "custom": true,
+                "id": "subnet-04ba8bd635b0cbb49",
+                "type": "aws:ec2/subnet:Subnet",
+                "inputs": {
+                    "__defaults": [
+                        "assignIpv6AddressOnCreation",
+                        "enableDns64",
+                        "enableResourceNameDnsARecordOnLaunch",
+                        "enableResourceNameDnsAaaaRecordOnLaunch",
+                        "ipv6Native",
+                        "mapPublicIpOnLaunch"
+                    ],
+                    "assignIpv6AddressOnCreation": false,
+                    "availabilityZone": "eu-central-1b",
+                    "cidrBlock": "10.0.1.0/24",
+                    "enableDns64": false,
+                    "enableResourceNameDnsARecordOnLaunch": false,
+                    "enableResourceNameDnsAaaaRecordOnLaunch": false,
+                    "ipv6Native": false,
+                    "mapPublicIpOnLaunch": false,
+                    "vpcId": "vpc-0b23dcaee7405a034"
+                },
+                "outputs": {
+                    "__meta": "{\"e2bfb730-ecaa-11e6-8f88-34363bc7c4c0\":{\"create\":600000000000,\"delete\":1200000000000},\"schema_version\":\"1\"}",
+                    "arn": "arn:aws:ec2:eu-central-1:814824721268:subnet/subnet-04ba8bd635b0cbb49",
+                    "assignIpv6AddressOnCreation": false,
+                    "availabilityZone": "eu-central-1b",
+                    "availabilityZoneId": "euc1-az3",
+                    "cidrBlock": "10.0.1.0/24",
+                    "customerOwnedIpv4Pool": "",
+                    "enableDns64": false,
+                    "enableResourceNameDnsARecordOnLaunch": false,
+                    "enableResourceNameDnsAaaaRecordOnLaunch": false,
+                    "id": "subnet-04ba8bd635b0cbb49",
+                    "ipv6CidrBlock": "",
+                    "ipv6CidrBlockAssociationId": "",
+                    "ipv6Native": false,
+                    "mapCustomerOwnedIpOnLaunch": false,
+                    "mapPublicIpOnLaunch": false,
+                    "outpostArn": "",
+                    "ownerId": "814824721268",
+                    "privateDnsHostnameTypeOnLaunch": "ip-name",
+                    "tags": {},
+                    "tagsAll": {},
+                    "vpcId": "vpc-0b23dcaee7405a034"
+                },
+                "parent": "urn:pulumi:dev::pulumi-sina::pulumi:pulumi:Stack::pulumi-sina-dev",
+                "dependencies": [
+                    "urn:pulumi:dev::pulumi-sina::aws:ec2/vpc:Vpc::sina-vpc"
+                ],
+                "provider": "urn:pulumi:dev::pulumi-sina::pulumi:providers:aws::default_4_38_1::c50592f3-97a2-42a5-affe-cc7f047cc88d",
+                "propertyDependencies": {
+                    "availabilityZone": null,
+                    "cidrBlock": null,
+                    "vpcId": [
+                        "urn:pulumi:dev::pulumi-sina::aws:ec2/vpc:Vpc::sina-vpc"
+                    ]
+                },
+                "sequenceNumber": 1
+            },
+            {
+                "urn": "urn:pulumi:dev::pulumi-sina::aws:ec2/subnet:Subnet::sina-public-subnet-1",
+                "custom": true,
+                "id": "subnet-0da6a8b4c5c8d835d",
+                "type": "aws:ec2/subnet:Subnet",
+                "inputs": {
+                    "__defaults": [
+                        "assignIpv6AddressOnCreation",
+                        "enableDns64",
+                        "enableResourceNameDnsARecordOnLaunch",
+                        "enableResourceNameDnsAaaaRecordOnLaunch",
+                        "ipv6Native",
+                        "mapPublicIpOnLaunch"
+                    ],
+                    "assignIpv6AddressOnCreation": false,
+                    "availabilityZone": "eu-central-1a",
+                    "cidrBlock": "10.0.2.0/24",
+                    "enableDns64": false,
+                    "enableResourceNameDnsARecordOnLaunch": false,
+                    "enableResourceNameDnsAaaaRecordOnLaunch": false,
+                    "ipv6Native": false,
+                    "mapPublicIpOnLaunch": false,
+                    "vpcId": "vpc-0b23dcaee7405a034"
+                },
+                "outputs": {
+                    "__meta": "{\"e2bfb730-ecaa-11e6-8f88-34363bc7c4c0\":{\"create\":600000000000,\"delete\":1200000000000},\"schema_version\":\"1\"}",
+                    "arn": "arn:aws:ec2:eu-central-1:814824721268:subnet/subnet-0da6a8b4c5c8d835d",
+                    "assignIpv6AddressOnCreation": false,
+                    "availabilityZone": "eu-central-1a",
+                    "availabilityZoneId": "euc1-az2",
+                    "cidrBlock": "10.0.2.0/24",
+                    "customerOwnedIpv4Pool": "",
+                    "enableDns64": false,
+                    "enableResourceNameDnsARecordOnLaunch": false,
+                    "enableResourceNameDnsAaaaRecordOnLaunch": false,
+                    "id": "subnet-0da6a8b4c5c8d835d",
+                    "ipv6CidrBlock": "",
+                    "ipv6CidrBlockAssociationId": "",
+                    "ipv6Native": false,
+                    "mapCustomerOwnedIpOnLaunch": false,
+                    "mapPublicIpOnLaunch": false,
+                    "outpostArn": "",
+                    "ownerId": "814824721268",
+                    "privateDnsHostnameTypeOnLaunch": "ip-name",
+                    "tags": {},
+                    "tagsAll": {},
+                    "vpcId": "vpc-0b23dcaee7405a034"
+                },
+                "parent": "urn:pulumi:dev::pulumi-sina::pulumi:pulumi:Stack::pulumi-sina-dev",
+                "dependencies": [
+                    "urn:pulumi:dev::pulumi-sina::aws:ec2/vpc:Vpc::sina-vpc"
+                ],
+                "provider": "urn:pulumi:dev::pulumi-sina::pulumi:providers:aws::default_4_38_1::c50592f3-97a2-42a5-affe-cc7f047cc88d",
+                "propertyDependencies": {
+                    "availabilityZone": null,
+                    "cidrBlock": null,
+                    "vpcId": [
+                        "urn:pulumi:dev::pulumi-sina::aws:ec2/vpc:Vpc::sina-vpc"
+                    ]
+                },
+                "sequenceNumber": 1
+            },
+            {
+                "urn": "urn:pulumi:dev::pulumi-sina::aws:ec2/subnet:Subnet::sina-public-subnet-2",
+                "custom": true,
+                "id": "subnet-0f1d9e210a269c211",
+                "type": "aws:ec2/subnet:Subnet",
+                "inputs": {
+                    "__defaults": [
+                        "assignIpv6AddressOnCreation",
+                        "enableDns64",
+                        "enableResourceNameDnsARecordOnLaunch",
+                        "enableResourceNameDnsAaaaRecordOnLaunch",
+                        "ipv6Native",
+                        "mapPublicIpOnLaunch"
+                    ],
+                    "assignIpv6AddressOnCreation": false,
+                    "availabilityZone": "eu-central-1b",
+                    "cidrBlock": "10.0.3.0/24",
+                    "enableDns64": false,
+                    "enableResourceNameDnsARecordOnLaunch": false,
+                    "enableResourceNameDnsAaaaRecordOnLaunch": false,
+                    "ipv6Native": false,
+                    "mapPublicIpOnLaunch": false,
+                    "vpcId": "vpc-0b23dcaee7405a034"
+                },
+                "outputs": {
+                    "__meta": "{\"e2bfb730-ecaa-11e6-8f88-34363bc7c4c0\":{\"create\":600000000000,\"delete\":1200000000000},\"schema_version\":\"1\"}",
+                    "arn": "arn:aws:ec2:eu-central-1:814824721268:subnet/subnet-0f1d9e210a269c211",
+                    "assignIpv6AddressOnCreation": false,
+                    "availabilityZone": "eu-central-1b",
+                    "availabilityZoneId": "euc1-az3",
+                    "cidrBlock": "10.0.3.0/24",
+                    "customerOwnedIpv4Pool": "",
+                    "enableDns64": false,
+                    "enableResourceNameDnsARecordOnLaunch": false,
+                    "enableResourceNameDnsAaaaRecordOnLaunch": false,
+                    "id": "subnet-0f1d9e210a269c211",
+                    "ipv6CidrBlock": "",
+                    "ipv6CidrBlockAssociationId": "",
+                    "ipv6Native": false,
+                    "mapCustomerOwnedIpOnLaunch": false,
+                    "mapPublicIpOnLaunch": false,
+                    "outpostArn": "",
+                    "ownerId": "814824721268",
+                    "privateDnsHostnameTypeOnLaunch": "ip-name",
+                    "tags": {},
+                    "tagsAll": {},
+                    "vpcId": "vpc-0b23dcaee7405a034"
+                },
+                "parent": "urn:pulumi:dev::pulumi-sina::pulumi:pulumi:Stack::pulumi-sina-dev",
+                "dependencies": [
+                    "urn:pulumi:dev::pulumi-sina::aws:ec2/vpc:Vpc::sina-vpc"
+                ],
+                "provider": "urn:pulumi:dev::pulumi-sina::pulumi:providers:aws::default_4_38_1::c50592f3-97a2-42a5-affe-cc7f047cc88d",
+                "propertyDependencies": {
+                    "availabilityZone": null,
+                    "cidrBlock": null,
+                    "vpcId": [
+                        "urn:pulumi:dev::pulumi-sina::aws:ec2/vpc:Vpc::sina-vpc"
+                    ]
+                },
+                "sequenceNumber": 1
+            },
+            {
+                "urn": "urn:pulumi:dev::pulumi-sina::aws:lb/targetGroup:TargetGroup::sina-tg",
+                "custom": true,
+                "id": "arn:aws:elasticloadbalancing:eu-central-1:814824721268:targetgroup/sina-tg-6e064e5/e5179da715df6db8",
+                "type": "aws:lb/targetGroup:TargetGroup",
+                "inputs": {
+                    "__defaults": [
+                        "connectionTermination",
+                        "deregistrationDelay",
+                        "lambdaMultiValueHeadersEnabled",
+                        "name",
+                        "proxyProtocolV2",
+                        "slowStart",
+                        "targetType"
+                    ],
+                    "connectionTermination": false,
+                    "deregistrationDelay": 300,
+                    "lambdaMultiValueHeadersEnabled": false,
+                    "name": "sina-tg-6e064e5",
+                    "port": 80,
+                    "protocol": "HTTP",
+                    "proxyProtocolV2": false,
+                    "slowStart": 0,
+                    "targetType": "instance",
+                    "vpcId": "vpc-0b23dcaee7405a034"
+                },
+                "outputs": {
+                    "arn": "arn:aws:elasticloadbalancing:eu-central-1:814824721268:targetgroup/sina-tg-6e064e5/e5179da715df6db8",
+                    "arnSuffix": "targetgroup/sina-tg-6e064e5/e5179da715df6db8",
+                    "connectionTermination": false,
+                    "deregistrationDelay": 300,
+                    "healthCheck": {
+                        "enabled": true,
+                        "healthyThreshold": 5,
+                        "interval": 30,
+                        "matcher": "200",
+                        "path": "/",
+                        "port": "traffic-port",
+                        "protocol": "HTTP",
+                        "timeout": 5,
+                        "unhealthyThreshold": 2
+                    },
+                    "id": "arn:aws:elasticloadbalancing:eu-central-1:814824721268:targetgroup/sina-tg-6e064e5/e5179da715df6db8",
+                    "lambdaMultiValueHeadersEnabled": false,
+                    "loadBalancingAlgorithmType": "round_robin",
+                    "name": "sina-tg-6e064e5",
+                    "port": 80,
+                    "protocol": "HTTP",
+                    "protocolVersion": "HTTP1",
+                    "proxyProtocolV2": false,
+                    "slowStart": 0,
+                    "stickiness": {
+                        "cookieDuration": 86400,
+                        "cookieName": "",
+                        "enabled": false,
+                        "type": "lb_cookie"
+                    },
+                    "tags": {},
+                    "tagsAll": {},
+                    "targetType": "instance",
+                    "vpcId": "vpc-0b23dcaee7405a034"
+                },
+                "parent": "urn:pulumi:dev::pulumi-sina::pulumi:pulumi:Stack::pulumi-sina-dev",
+                "dependencies": [
+                    "urn:pulumi:dev::pulumi-sina::aws:ec2/vpc:Vpc::sina-vpc"
+                ],
+                "provider": "urn:pulumi:dev::pulumi-sina::pulumi:providers:aws::default_4_38_1::c50592f3-97a2-42a5-affe-cc7f047cc88d",
+                "propertyDependencies": {
+                    "port": null,
+                    "protocol": null,
+                    "vpcId": [
+                        "urn:pulumi:dev::pulumi-sina::aws:ec2/vpc:Vpc::sina-vpc"
+                    ]
+                },
+                "aliases": [
+                    "urn:pulumi:dev::pulumi-sina::aws:elasticloadbalancingv2/targetGroup:TargetGroup::sina-tg"
+                ],
+                "sequenceNumber": 1
+            },
+            {
+                "urn": "urn:pulumi:dev::pulumi-sina::aws:ec2/launchTemplate:LaunchTemplate::sina-template",
+                "custom": true,
+                "id": "lt-0a929d8e773af9283",
+                "type": "aws:ec2/launchTemplate:LaunchTemplate",
+                "inputs": {
+                    "__defaults": [],
+                    "imageId": "ami-0e555328a7ec0b37d",
+                    "instanceType": "t2.micro",
+                    "keyName": "sina-key",
+                    "namePrefix": "sina-template",
+                    "tagSpecifications": [
+                        {
+                            "__defaults": [],
+                            "resourceType": "instance",
+                            "tags": {
+                                "Name": "SinaASGInstance",
+                                "__defaults": []
+                            }
+                        }
+                    ],
+                    "tags": {
+                        "Name": "SinaASGTemplate",
+                        "__defaults": []
+                    },
+                    "vpcSecurityGroupIds": [
+                        "sg-06ee1c58d7df75c4b"
+                    ]
+                },
+                "outputs": {
+                    "arn": "arn:aws:ec2:eu-central-1:814824721268:launch-template/lt-0a929d8e773af9283",
+                    "blockDeviceMappings": [],
+                    "capacityReservationSpecification": null,
+                    "cpuOptions": null,
+                    "creditSpecification": null,
+                    "defaultVersion": 1,
+                    "description": "",
+                    "disableApiTermination": false,
+                    "ebsOptimized": "",
+                    "elasticGpuSpecifications": [],
+                    "elasticInferenceAccelerator": null,
+                    "enclaveOptions": null,
+                    "hibernationOptions": null,
+                    "iamInstanceProfile": null,
+                    "id": "lt-0a929d8e773af9283",
+                    "imageId": "ami-0e555328a7ec0b37d",
+                    "instanceInitiatedShutdownBehavior": "",
+                    "instanceMarketOptions": null,
+                    "instanceType": "t2.micro",
+                    "kernelId": "",
+                    "keyName": "sina-key",
+                    "latestVersion": 1,
+                    "licenseSpecifications": [],
+                    "metadataOptions": null,
+                    "monitoring": null,
+                    "name": "sina-template20220316231224686300000001",
+                    "namePrefix": "sina-template",
+                    "networkInterfaces": [],
+                    "placement": null,
+                    "ramDiskId": "",
+                    "securityGroupNames": [],
+                    "tagSpecifications": [
+                        {
+                            "resourceType": "instance",
+                            "tags": {
+                                "Name": "SinaASGInstance"
+                            }
+                        }
+                    ],
+                    "tags": {
+                        "Name": "SinaASGTemplate"
+                    },
+                    "tagsAll": {
+                        "Name": "SinaASGTemplate"
+                    },
+                    "userData": "",
+                    "vpcSecurityGroupIds": [
+                        "sg-06ee1c58d7df75c4b"
+                    ]
+                },
+                "parent": "urn:pulumi:dev::pulumi-sina::pulumi:pulumi:Stack::pulumi-sina-dev",
+                "dependencies": [
+                    "urn:pulumi:dev::pulumi-sina::aws:ec2/securityGroup:SecurityGroup::sina-sg"
+                ],
+                "provider": "urn:pulumi:dev::pulumi-sina::pulumi:providers:aws::default_4_38_1::c50592f3-97a2-42a5-affe-cc7f047cc88d",
+                "propertyDependencies": {
+                    "imageId": null,
+                    "instanceType": null,
+                    "keyName": null,
+                    "namePrefix": null,
+                    "tagSpecifications": null,
+                    "tags": null,
+                    "vpcSecurityGroupIds": [
+                        "urn:pulumi:dev::pulumi-sina::aws:ec2/securityGroup:SecurityGroup::sina-sg"
+                    ]
+                },
+                "sequenceNumber": 1
+            },
+            {
+                "urn": "urn:pulumi:dev::pulumi-sina::aws:ec2/routeTable:RouteTable::sina-route-table",
+                "custom": true,
+                "id": "rtb-01f76a196f6314774",
+                "type": "aws:ec2/routeTable:RouteTable",
+                "inputs": {
+                    "__defaults": [],
+                    "routes": [
+                        {
+                            "__defaults": [],
+                            "cidrBlock": "0.0.0.0/0",
+                            "gatewayId": "igw-0e5dff89d8688b865"
+                        }
+                    ],
+                    "vpcId": "vpc-0b23dcaee7405a034"
+                },
+                "outputs": {
+                    "__meta": "{\"e2bfb730-ecaa-11e6-8f88-34363bc7c4c0\":{\"create\":300000000000,\"delete\":300000000000,\"update\":120000000000}}",
+                    "arn": "arn:aws:ec2:eu-central-1:814824721268:route-table/rtb-01f76a196f6314774",
+                    "id": "rtb-01f76a196f6314774",
+                    "ownerId": "814824721268",
+                    "propagatingVgws": [],
+                    "routes": [
+                        {
+                            "carrierGatewayId": "",
+                            "cidrBlock": "0.0.0.0/0",
+                            "destinationPrefixListId": "",
+                            "egressOnlyGatewayId": "",
+                            "gatewayId": "igw-0e5dff89d8688b865",
+                            "instanceId": "",
+                            "ipv6CidrBlock": "",
+                            "localGatewayId": "",
+                            "natGatewayId": "",
+                            "networkInterfaceId": "",
+                            "transitGatewayId": "",
+                            "vpcEndpointId": "",
+                            "vpcPeeringConnectionId": ""
+                        }
+                    ],
+                    "tags": {},
+                    "tagsAll": {},
+                    "vpcId": "vpc-0b23dcaee7405a034"
+                },
+                "parent": "urn:pulumi:dev::pulumi-sina::pulumi:pulumi:Stack::pulumi-sina-dev",
+                "dependencies": [
+                    "urn:pulumi:dev::pulumi-sina::aws:ec2/internetGateway:InternetGateway::sina-ig",
+                    "urn:pulumi:dev::pulumi-sina::aws:ec2/vpc:Vpc::sina-vpc"
+                ],
+                "provider": "urn:pulumi:dev::pulumi-sina::pulumi:providers:aws::default_4_38_1::c50592f3-97a2-42a5-affe-cc7f047cc88d",
+                "propertyDependencies": {
+                    "routes": [
+                        "urn:pulumi:dev::pulumi-sina::aws:ec2/internetGateway:InternetGateway::sina-ig"
+                    ],
+                    "vpcId": [
+                        "urn:pulumi:dev::pulumi-sina::aws:ec2/vpc:Vpc::sina-vpc"
+                    ]
+                },
+                "sequenceNumber": 1
+            },
+            {
+                "urn": "urn:pulumi:dev::pulumi-sina::aws:ec2/routeTableAssociation:RouteTableAssociation::sina-public-subnet-1-route-table-association",
+                "custom": true,
+                "id": "rtbassoc-0c53eb8fb9cfa226e",
+                "type": "aws:ec2/routeTableAssociation:RouteTableAssociation",
+                "inputs": {
+                    "__defaults": [],
+                    "routeTableId": "rtb-01f76a196f6314774",
+                    "subnetId": "subnet-0da6a8b4c5c8d835d"
+                },
+                "outputs": {
+                    "gatewayId": "",
+                    "id": "rtbassoc-0c53eb8fb9cfa226e",
+                    "routeTableId": "rtb-01f76a196f6314774",
+                    "subnetId": "subnet-0da6a8b4c5c8d835d"
+                },
+                "parent": "urn:pulumi:dev::pulumi-sina::pulumi:pulumi:Stack::pulumi-sina-dev",
+                "dependencies": [
+                    "urn:pulumi:dev::pulumi-sina::aws:ec2/subnet:Subnet::sina-public-subnet-1",
+                    "urn:pulumi:dev::pulumi-sina::aws:ec2/routeTable:RouteTable::sina-route-table"
+                ],
+                "provider": "urn:pulumi:dev::pulumi-sina::pulumi:providers:aws::default_4_38_1::c50592f3-97a2-42a5-affe-cc7f047cc88d",
+                "propertyDependencies": {
+                    "routeTableId": [
+                        "urn:pulumi:dev::pulumi-sina::aws:ec2/routeTable:RouteTable::sina-route-table"
+                    ],
+                    "subnetId": [
+                        "urn:pulumi:dev::pulumi-sina::aws:ec2/subnet:Subnet::sina-public-subnet-1"
+                    ]
+                },
+                "sequenceNumber": 1
+            },
+            {
+                "urn": "urn:pulumi:dev::pulumi-sina::aws:ec2/routeTableAssociation:RouteTableAssociation::sina-public-subnet-2-route-table-association",
+                "custom": true,
+                "id": "rtbassoc-085f2354608d8a2aa",
+                "type": "aws:ec2/routeTableAssociation:RouteTableAssociation",
+                "inputs": {
+                    "__defaults": [],
+                    "routeTableId": "rtb-01f76a196f6314774",
+                    "subnetId": "subnet-0f1d9e210a269c211"
+                },
+                "outputs": {
+                    "gatewayId": "",
+                    "id": "rtbassoc-085f2354608d8a2aa",
+                    "routeTableId": "rtb-01f76a196f6314774",
+                    "subnetId": "subnet-0f1d9e210a269c211"
+                },
+                "parent": "urn:pulumi:dev::pulumi-sina::pulumi:pulumi:Stack::pulumi-sina-dev",
+                "dependencies": [
+                    "urn:pulumi:dev::pulumi-sina::aws:ec2/subnet:Subnet::sina-public-subnet-2",
+                    "urn:pulumi:dev::pulumi-sina::aws:ec2/routeTable:RouteTable::sina-route-table"
+                ],
+                "provider": "urn:pulumi:dev::pulumi-sina::pulumi:providers:aws::default_4_38_1::c50592f3-97a2-42a5-affe-cc7f047cc88d",
+                "propertyDependencies": {
+                    "routeTableId": [
+                        "urn:pulumi:dev::pulumi-sina::aws:ec2/routeTable:RouteTable::sina-route-table"
+                    ],
+                    "subnetId": [
+                        "urn:pulumi:dev::pulumi-sina::aws:ec2/subnet:Subnet::sina-public-subnet-2"
+                    ]
+                },
+                "sequenceNumber": 1
+            },
+            {
+                "urn": "urn:pulumi:dev::pulumi-sina::aws:lb/loadBalancer:LoadBalancer::sina-elb",
+                "custom": true,
+                "id": "arn:aws:elasticloadbalancing:eu-central-1:814824721268:loadbalancer/app/sina-elb-95441b5/daba4c749d84c34a",
+                "type": "aws:lb/loadBalancer:LoadBalancer",
+                "inputs": {
+                    "__defaults": [
+                        "desyncMitigationMode",
+                        "dropInvalidHeaderFields",
+                        "enableCrossZoneLoadBalancing",
+                        "enableDeletionProtection",
+                        "enableHttp2",
+                        "enableWafFailOpen",
+                        "idleTimeout",
+                        "name"
+                    ],
+                    "desyncMitigationMode": "defensive",
+                    "dropInvalidHeaderFields": false,
+                    "enableCrossZoneLoadBalancing": false,
+                    "enableDeletionProtection": false,
+                    "enableHttp2": true,
+                    "enableWafFailOpen": false,
+                    "idleTimeout": 60,
+                    "internal": false,
+                    "loadBalancerType": "application",
+                    "name": "sina-elb-95441b5",
+                    "securityGroups": [
+                        "sg-06ee1c58d7df75c4b"
+                    ],
+                    "subnets": [
+                        "subnet-0da6a8b4c5c8d835d",
+                        "subnet-0f1d9e210a269c211"
+                    ]
+                },
+                "outputs": {
+                    "__meta": "{\"e2bfb730-ecaa-11e6-8f88-34363bc7c4c0\":{\"create\":600000000000,\"delete\":600000000000,\"update\":600000000000}}",
+                    "accessLogs": {
+                        "bucket": "",
+                        "enabled": false,
+                        "prefix": ""
+                    },
+                    "arn": "arn:aws:elasticloadbalancing:eu-central-1:814824721268:loadbalancer/app/sina-elb-95441b5/daba4c749d84c34a",
+                    "arnSuffix": "app/sina-elb-95441b5/daba4c749d84c34a",
+                    "customerOwnedIpv4Pool": "",
+                    "desyncMitigationMode": "defensive",
+                    "dnsName": "sina-elb-95441b5-1566607230.eu-central-1.elb.amazonaws.com",
+                    "dropInvalidHeaderFields": false,
+                    "enableCrossZoneLoadBalancing": false,
+                    "enableDeletionProtection": false,
+                    "enableHttp2": true,
+                    "enableWafFailOpen": false,
+                    "id": "arn:aws:elasticloadbalancing:eu-central-1:814824721268:loadbalancer/app/sina-elb-95441b5/daba4c749d84c34a",
+                    "idleTimeout": 60,
+                    "internal": false,
+                    "ipAddressType": "ipv4",
+                    "loadBalancerType": "application",
+                    "name": "sina-elb-95441b5",
+                    "securityGroups": [
+                        "sg-06ee1c58d7df75c4b"
+                    ],
+                    "subnetMappings": [
+                        {
+                            "allocationId": "",
+                            "ipv6Address": "",
+                            "outpostId": "",
+                            "privateIpv4Address": "",
+                            "subnetId": "subnet-0f1d9e210a269c211"
+                        },
+                        {
+                            "allocationId": "",
+                            "ipv6Address": "",
+                            "outpostId": "",
+                            "privateIpv4Address": "",
+                            "subnetId": "subnet-0da6a8b4c5c8d835d"
+                        }
+                    ],
+                    "subnets": [
+                        "subnet-0da6a8b4c5c8d835d",
+                        "subnet-0f1d9e210a269c211"
+                    ],
+                    "tags": {},
+                    "tagsAll": {},
+                    "vpcId": "vpc-0b23dcaee7405a034",
+                    "zoneId": "Z215JYRZR1TBD5"
+                },
+                "parent": "urn:pulumi:dev::pulumi-sina::pulumi:pulumi:Stack::pulumi-sina-dev",
+                "dependencies": [
+                    "urn:pulumi:dev::pulumi-sina::aws:ec2/securityGroup:SecurityGroup::sina-sg",
+                    "urn:pulumi:dev::pulumi-sina::aws:ec2/subnet:Subnet::sina-public-subnet-1",
+                    "urn:pulumi:dev::pulumi-sina::aws:ec2/subnet:Subnet::sina-public-subnet-2"
+                ],
+                "provider": "urn:pulumi:dev::pulumi-sina::pulumi:providers:aws::default_4_38_1::c50592f3-97a2-42a5-affe-cc7f047cc88d",
+                "propertyDependencies": {
+                    "internal": null,
+                    "loadBalancerType": null,
+                    "securityGroups": [
+                        "urn:pulumi:dev::pulumi-sina::aws:ec2/securityGroup:SecurityGroup::sina-sg"
+                    ],
+                    "subnets": [
+                        "urn:pulumi:dev::pulumi-sina::aws:ec2/subnet:Subnet::sina-public-subnet-1",
+                        "urn:pulumi:dev::pulumi-sina::aws:ec2/subnet:Subnet::sina-public-subnet-2"
+                    ]
+                },
+                "aliases": [
+                    "urn:pulumi:dev::pulumi-sina::aws:elasticloadbalancingv2/loadBalancer:LoadBalancer::sina-elb"
+                ],
+                "sequenceNumber": 1
+            },
+            {
+                "urn": "urn:pulumi:dev::pulumi-sina::aws:lb/listener:Listener::sina-lb-http-listener",
+                "custom": true,
+                "id": "arn:aws:elasticloadbalancing:eu-central-1:814824721268:listener/app/sina-elb-95441b5/daba4c749d84c34a/62594131e34b4de6",
+                "type": "aws:lb/listener:Listener",
+                "inputs": {
+                    "__defaults": [],
+                    "defaultActions": [
+                        {
+                            "__defaults": [],
+                            "targetGroupArn": "arn:aws:elasticloadbalancing:eu-central-1:814824721268:targetgroup/sina-tg-6e064e5/e5179da715df6db8",
+                            "type": "forward"
+                        }
+                    ],
+                    "loadBalancerArn": "arn:aws:elasticloadbalancing:eu-central-1:814824721268:loadbalancer/app/sina-elb-95441b5/daba4c749d84c34a",
+                    "port": 80,
+                    "protocol": "HTTP"
+                },
+                "outputs": {
+                    "__meta": "{\"e2bfb730-ecaa-11e6-8f88-34363bc7c4c0\":{\"read\":600000000000}}",
+                    "arn": "arn:aws:elasticloadbalancing:eu-central-1:814824721268:listener/app/sina-elb-95441b5/daba4c749d84c34a/62594131e34b4de6",
+                    "defaultActions": [
+                        {
+                            "authenticateCognito": null,
+                            "authenticateOidc": null,
+                            "fixedResponse": null,
+                            "forward": null,
+                            "order": 1,
+                            "redirect": null,
+                            "targetGroupArn": "arn:aws:elasticloadbalancing:eu-central-1:814824721268:targetgroup/sina-tg-6e064e5/e5179da715df6db8",
+                            "type": "forward"
+                        }
+                    ],
+                    "id": "arn:aws:elasticloadbalancing:eu-central-1:814824721268:listener/app/sina-elb-95441b5/daba4c749d84c34a/62594131e34b4de6",
+                    "loadBalancerArn": "arn:aws:elasticloadbalancing:eu-central-1:814824721268:loadbalancer/app/sina-elb-95441b5/daba4c749d84c34a",
+                    "port": 80,
+                    "protocol": "HTTP",
+                    "sslPolicy": "",
+                    "tags": {},
+                    "tagsAll": {}
+                },
+                "parent": "urn:pulumi:dev::pulumi-sina::pulumi:pulumi:Stack::pulumi-sina-dev",
+                "dependencies": [
+                    "urn:pulumi:dev::pulumi-sina::aws:lb/targetGroup:TargetGroup::sina-tg",
+                    "urn:pulumi:dev::pulumi-sina::aws:lb/loadBalancer:LoadBalancer::sina-elb"
+                ],
+                "provider": "urn:pulumi:dev::pulumi-sina::pulumi:providers:aws::default_4_38_1::c50592f3-97a2-42a5-affe-cc7f047cc88d",
+                "propertyDependencies": {
+                    "defaultActions": [
+                        "urn:pulumi:dev::pulumi-sina::aws:lb/targetGroup:TargetGroup::sina-tg"
+                    ],
+                    "loadBalancerArn": [
+                        "urn:pulumi:dev::pulumi-sina::aws:lb/loadBalancer:LoadBalancer::sina-elb"
+                    ],
+                    "port": null,
+                    "protocol": null
+                },
+                "aliases": [
+                    "urn:pulumi:dev::pulumi-sina::aws:elasticloadbalancingv2/listener:Listener::sina-lb-http-listener"
+                ],
+                "sequenceNumber": 1
+            },
+            {
+                "urn": "urn:pulumi:dev::pulumi-sina::aws:autoscaling/group:Group::sina-asg",
+                "custom": true,
+                "id": "sina-asg-dbbced9",
+                "type": "aws:autoscaling/group:Group",
+                "inputs": {
+                    "__defaults": [
+                        "forceDelete",
+                        "forceDeleteWarmPool",
+                        "healthCheckGracePeriod",
+                        "metricsGranularity",
+                        "name",
+                        "protectFromScaleIn",
+                        "waitForCapacityTimeout"
+                    ],
+                    "desiredCapacity": 2,
+                    "forceDelete": false,
+                    "forceDeleteWarmPool": false,
+                    "healthCheckGracePeriod": 300,
+                    "launchTemplate": {
+                        "id": "lt-0a929d8e773af9283",
+                        "version": "$Latest"
+                    },
+                    "maxSize": 3,
+                    "metricsGranularity": "1Minute",
+                    "minSize": 2,
+                    "name": "sina-asg-dbbced9",
+                    "protectFromScaleIn": false,
+                    "vpcZoneIdentifiers": [
+                        "subnet-0f1d9e210a269c211",
+                        "subnet-03f50f1ffa82972d7"
+                    ],
+                    "waitForCapacityTimeout": "10m"
+                },
+                "outputs": {
+                    "__meta": "{\"e2bfb730-ecaa-11e6-8f88-34363bc7c4c0\":{\"delete\":600000000000}}",
+                    "arn": "arn:aws:autoscaling:eu-central-1:814824721268:autoScalingGroup:b4fc821e-56bb-417a-beab-c75edc6378df:autoScalingGroupName/sina-asg-dbbced9",
+                    "availabilityZones": [
+                        "eu-central-1b",
+                        "eu-central-1a"
+                    ],
+                    "capacityRebalance": false,
+                    "defaultCooldown": 300,
+                    "desiredCapacity": 2,
+                    "enabledMetrics": [],
+                    "forceDelete": false,
+                    "forceDeleteWarmPool": false,
+                    "healthCheckGracePeriod": 300,
+                    "healthCheckType": "EC2",
+                    "id": "sina-asg-dbbced9",
+                    "initialLifecycleHooks": [],
+                    "instanceRefresh": null,
+                    "launchConfiguration": "",
+                    "launchTemplate": {
+                        "id": "lt-0a929d8e773af9283",
+                        "name": "sina-template20220316231224686300000001",
+                        "version": "$Latest"
+                    },
+                    "loadBalancers": [],
+                    "maxInstanceLifetime": 0,
+                    "maxSize": 3,
+                    "metricsGranularity": "1Minute",
+                    "minSize": 2,
+                    "mixedInstancesPolicy": null,
+                    "name": "sina-asg-dbbced9",
+                    "namePrefix": "",
+                    "placementGroup": "",
+                    "protectFromScaleIn": false,
+                    "serviceLinkedRoleArn": "arn:aws:iam::814824721268:role/aws-service-role/autoscaling.amazonaws.com/AWSServiceRoleForAutoScaling",
+                    "suspendedProcesses": [],
+                    "tags": [],
+                    "tagsCollection": [],
+                    "targetGroupArns": [
+                        "arn:aws:elasticloadbalancing:eu-central-1:814824721268:targetgroup/sina-tg-6e064e5/e5179da715df6db8"
+                    ],
+                    "terminationPolicies": [],
+                    "vpcZoneIdentifiers": [
+                        "subnet-0f1d9e210a269c211",
+                        "subnet-03f50f1ffa82972d7"
+                    ],
+                    "waitForCapacityTimeout": "10m",
+                    "warmPool": null
+                },
+                "parent": "urn:pulumi:dev::pulumi-sina::pulumi:pulumi:Stack::pulumi-sina-dev",
+                "dependencies": [
+                    "urn:pulumi:dev::pulumi-sina::aws:ec2/subnet:Subnet::sina-public-subnet-2",
+                    "urn:pulumi:dev::pulumi-sina::aws:ec2/subnet:Subnet::sina-private-subnet-1",
+                    "urn:pulumi:dev::pulumi-sina::aws:ec2/launchTemplate:LaunchTemplate::sina-template"
+                ],
+                "provider": "urn:pulumi:dev::pulumi-sina::pulumi:providers:aws::default_4_38_1::c50592f3-97a2-42a5-affe-cc7f047cc88d",
+                "propertyDependencies": {
+                    "desiredCapacity": null,
+                    "launchTemplate": [
+                        "urn:pulumi:dev::pulumi-sina::aws:ec2/launchTemplate:LaunchTemplate::sina-template"
+                    ],
+                    "maxSize": null,
+                    "minSize": null,
+                    "vpcZoneIdentifiers": [
+                        "urn:pulumi:dev::pulumi-sina::aws:ec2/subnet:Subnet::sina-public-subnet-2",
+                        "urn:pulumi:dev::pulumi-sina::aws:ec2/subnet:Subnet::sina-private-subnet-1"
+                    ]
+                },
+                "sequenceNumber": 1
+            }
+        ],
+        "pending_operations": [ ]
+    }
+}

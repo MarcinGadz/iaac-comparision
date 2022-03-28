@@ -1,0 +1,7 @@
+name: pulumi-sina
+runtime:
+  name: python
+  options:
+    virtualenv: venv
+description: Projekt przygotwany na zajęcia Selected Issues of Network Aplications
+  zawierający podstawową architekturę chmurową.
