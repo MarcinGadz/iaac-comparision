@@ -28,7 +28,7 @@ resource "aws_security_group" "sina-sg" {
     to_port          = 80
     protocol         = "tcp"
     cidr_blocks      = [aws_vpc.sina_vpc.cidr_block] # TODO CHECK
-    ipv6_cidr_blocks = [aws_vpc.sina_vpc.ipv6_cidr_block]
+    # ipv6_cidr_blocks = [aws_vpc.sina_vpc.ipv6_cidr_block]
   }
 
   ingress {
@@ -37,7 +37,7 @@ resource "aws_security_group" "sina-sg" {
     to_port=443
     protocol="tcp"
     cidr_blocks      = [aws_vpc.sina_vpc.cidr_block] # TODO CHECK
-    ipv6_cidr_blocks = [aws_vpc.sina_vpc.ipv6_cidr_block]
+    # ipv6_cidr_blocks = [aws_vpc.sina_vpc.ipv6_cidr_block]
   }
 
   egress {
@@ -109,10 +109,14 @@ resource "aws_lb" "sina-lb" {
 
 resource "aws_s3_bucket" "sina-bucket" {
   bucket = "pl-sina-bucket"
-
   tags = {
     Name        = "Sina bucket"
   }
+}
+
+resource "aws_s3_bucket_acl" "sina-bucket-acl" {
+  bucket = aws_s3_bucket.sina-bucket.id
+  acl    = "private"
 }
 
 resource "aws_placement_group" "sina_placement_group" {
