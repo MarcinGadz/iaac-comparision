@@ -27,7 +27,8 @@ resource "aws_security_group" "sina-sg" {
     from_port        = 80
     to_port          = 80
     protocol         = "tcp"
-    cidr_blocks      = [aws_vpc.sina_vpc.cidr_block]
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
     # ipv6_cidr_blocks = [aws_vpc.sina_vpc.ipv6_cidr_block]
   }
 
@@ -36,7 +37,8 @@ resource "aws_security_group" "sina-sg" {
     from_port=443
     to_port=443
     protocol="tcp"
-    cidr_blocks      = [aws_vpc.sina_vpc.cidr_block]
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
     # ipv6_cidr_blocks = [aws_vpc.sina_vpc.ipv6_cidr_block]
   }
 
@@ -124,9 +126,29 @@ resource "aws_placement_group" "sina_placement_group" {
   strategy = "cluster"
 }
 
+# data "aws_ami" "latest-sinaami" {
+# most_recent = true
+# owners = ["self"] # to change
+
+#   filter {
+#       name   = "name"
+#       values = ["sinaami-*"]
+#   }
+# }
+
+resource "aws_route_table" "sina-route-table" {
+  vpc_id = aws_vpc.sina_vpc.id
+  route {
+    cidr_block = "10.0.3.0/24"
+    gateway_id = aws_internet_gateway.sina-ig.id
+  }
+}
+
+# TODO
+
 # resource "aws_launch_template" "sina-template" {
 #   name = "sina-template"
-#   ami           = "ami-0dcc0ebde7b2e00db"
+#   ami           = latest-sinaami # Check
 #   instance_type = "t2.micro"
 # }
 
@@ -173,3 +195,8 @@ resource "aws_placement_group" "sina_placement_group" {
 #     version = "$Latest"
 #   }
 # }
+
+# ROUTE TABLE
+# ROUTE TABLE ASSOCIATIONS
+# TARGET GROUP
+# LB HTTP LISTENER
