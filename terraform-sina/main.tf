@@ -20,14 +20,14 @@ resource "aws_vpc" "sina_vpc" {
 
 resource "aws_security_group" "sina-sg" {
   description = "Allow http and https traffic from the instance"
-  vpc_id      = aws_vpc.sina_vpc.id # TODO check if it is correct
+  vpc_id      = aws_vpc.sina_vpc.id
 
   ingress {
     description      = "HTTP from VPC"
     from_port        = 80
     to_port          = 80
     protocol         = "tcp"
-    cidr_blocks      = [aws_vpc.sina_vpc.cidr_block] # TODO CHECK
+    cidr_blocks      = [aws_vpc.sina_vpc.cidr_block]
     # ipv6_cidr_blocks = [aws_vpc.sina_vpc.ipv6_cidr_block]
   }
 
@@ -36,7 +36,7 @@ resource "aws_security_group" "sina-sg" {
     from_port=443
     to_port=443
     protocol="tcp"
-    cidr_blocks      = [aws_vpc.sina_vpc.cidr_block] # TODO CHECK
+    cidr_blocks      = [aws_vpc.sina_vpc.cidr_block]
     # ipv6_cidr_blocks = [aws_vpc.sina_vpc.ipv6_cidr_block]
   }
 
