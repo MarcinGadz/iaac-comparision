@@ -126,77 +126,69 @@ resource "aws_placement_group" "sina_placement_group" {
   strategy = "cluster"
 }
 
-# data "aws_ami" "latest-sinaami" {
-# most_recent = true
-# owners = ["self"] # to change
+data "aws_ami" "latest-sinaami" {
+most_recent = true
+owners = ["814824721268"]
 
-#   filter {
-#       name   = "name"
-#       values = ["sinaami-*"]
-#   }
-# }
+  filter {
+      name   = "name"
+      values = ["sinaami-*"]
+  }
+}
 
 resource "aws_route_table" "sina-route-table" {
   vpc_id = aws_vpc.sina_vpc.id
   route {
-    cidr_block = "10.0.3.0/24"
+    cidr_block = "10.0.3.0/24" # 0.0.0.0/10 ???
     gateway_id = aws_internet_gateway.sina-ig.id
   }
 }
 
 # TODO
 
-# resource "aws_launch_template" "sina-template" {
-#   name = "sina-template"
-#   ami           = latest-sinaami # Check
-#   instance_type = "t2.micro"
-# }
+resource "aws_launch_template" "sina-template" {
+  name = "sina-template"
+  # ami           = latest-sinaami # Check
+  image_id = data.aws_ami.latest-sinaami.id
+  instance_type = "t2.micro"
+}
 
-# resource "aws_autoscaling_group" "sina-asg" {
-#   name                      = "sina-asg"
-#   max_size                  = 4
-#   min_size                  = 2
-#   health_check_grace_period = 300
-#   health_check_type         = "ELB"
-#   desired_capacity          = 3
-#   force_delete              = true
-#   placement_group           = aws_placement_group.sina_placement_group.id
-#   launch_configuration      = aws_launch_template.sina-template.name
-#   vpc_zone_identifier       = [aws_subnet.sina-private-subnet-1.id, aws_subnet.sina-private-subnet-2.id]
+resource "aws_autoscaling_group" "sina-asg" {
+  name                      = "sina-asg"
+  max_size                  = 4
+  min_size                  = 2
+#  health_check_grace_period = 300 ## to remove??
+#  health_check_type         = "ELB" ## to remove??
+  desired_capacity          = 2
+  force_delete              = true
+  placement_group           = aws_placement_group.sina_placement_group.id
+  launch_configuration      = aws_launch_template.sina-template.name
+  vpc_zone_identifier       = [aws_subnet.sina-private-subnet-1.id, aws_subnet.sina-private-subnet-2.id]
 
-#   initial_lifecycle_hook {
-#     name                 = "sina"
-#     default_result       = "CONTINUE"
-#     heartbeat_timeout    = 2000
-#     lifecycle_transition = "autoscaling:EC2_INSTANCE_LAUNCHING"
+  timeouts {
+    delete = "5m"
+  }
 
-# #     notification_metadata = <<EOF
-# # {
-# #   "foo": "bar"
-# # }
-# # EOF
+  launch_template {
+    id      = "${aws_launch_template.sina-template.id}"
+    version = "$Latest"
+  }
+}
 
-# #     notification_target_arn = "arn:aws:sqs:us-east-1:444455556666:queue1*"
-# #     role_arn                = "arn:aws:iam::123456789012:role/S3Access"
-#   }
+resource "aws_lb_target_group" "sina-tg" {
+  name     = "sina-tg"
+  port     = 80
+  protocol = "HTTP"
+  vpc_id   = aws_vpc.sina_vpc.id
+}
 
-#   # tag {
-#   #   key                 = "sina-key"
-#   #   value               = "Sina"
-#   #   propagate_at_launch = false
-#   # }
-
-#   timeouts {
-#     delete = "5m"
-#   }
-
-#   launch_template {
-#     id      = aws_launch_template.foobar.id
-#     version = "$Latest"
-#   }
-# }
-
-# ROUTE TABLE
-# ROUTE TABLE ASSOCIATIONS
-# TARGET GROUP
-# LB HTTP LISTENER
+resource "aws_lb_listener" "sina-http-listener" {
+  load_balancer_arn = aws_lb.sina-lb.arn
+  port              = "80"
+  protocol          = "HTTP"
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.sina-tg.arn
+  }
+}
+# ROUTE TABLE ASSOCIATION
