@@ -66,6 +66,7 @@ resource "aws_internet_gateway" "sina-ig" {
 resource "aws_subnet" "sina-private-subnet-1" {
   vpc_id     = aws_vpc.sina_vpc.id
   cidr_block = "10.0.0.0/24"
+  availability_zone = "eu-central-1a"
 
   tags = {
     Name = "sina-private-subnet-1"
@@ -75,6 +76,7 @@ resource "aws_subnet" "sina-private-subnet-1" {
 resource "aws_subnet" "sina-private-subnet-2" {
   vpc_id     = aws_vpc.sina_vpc.id
   cidr_block = "10.0.1.0/24"
+  availability_zone = "eu-central-1b"
 
   tags = {
     Name = "sina-private-subnet-2"
@@ -84,7 +86,7 @@ resource "aws_subnet" "sina-private-subnet-2" {
 resource "aws_subnet" "sina-public-subnet-1" {
   vpc_id     = aws_vpc.sina_vpc.id
   cidr_block = "10.0.2.0/24"
-
+  availability_zone = "eu-central-1a"
   tags = {
     Name = "sina-public-subnet-1"
   }
@@ -93,6 +95,7 @@ resource "aws_subnet" "sina-public-subnet-1" {
 resource "aws_subnet" "sina-public-subnet-2" {
   vpc_id     = aws_vpc.sina_vpc.id
   cidr_block = "10.0.3.0/24"
+  availability_zone = "eu-central-1b"
 
   tags = {
     Name = "sina-public-subnet-2"
@@ -106,11 +109,11 @@ resource "aws_lb" "sina-lb" {
   security_groups    = [aws_security_group.sina-sg.id]
   subnets            = [aws_subnet.sina-public-subnet-1.id, aws_subnet.sina-public-subnet-2.id]
 
-  enable_deletion_protection = true
+  enable_deletion_protection = false
 }
 
 resource "aws_s3_bucket" "sina-bucket" {
-  bucket = "pl-sina-bucket"
+  bucket = "pl-sina-bucket-tf"
   tags = {
     Name        = "Sina bucket"
   }
@@ -119,11 +122,6 @@ resource "aws_s3_bucket" "sina-bucket" {
 resource "aws_s3_bucket_acl" "sina-bucket-acl" {
   bucket = aws_s3_bucket.sina-bucket.id
   acl    = "private"
-}
-
-resource "aws_placement_group" "sina_placement_group" {
-  name     = "sina_placement_group"
-  strategy = "cluster"
 }
 
 data "aws_ami" "latest-sinaami" {
@@ -139,12 +137,10 @@ owners = ["814824721268"]
 resource "aws_route_table" "sina-route-table" {
   vpc_id = aws_vpc.sina_vpc.id
   route {
-    cidr_block = "10.0.3.0/24" # 0.0.0.0/10 ???
+    cidr_block = "0.0.0.0/0" # 0.0.0.0/10 ???
     gateway_id = aws_internet_gateway.sina-ig.id
   }
 }
-
-# TODO
 
 resource "aws_launch_template" "sina-template" {
   name = "sina-template"
@@ -161,8 +157,8 @@ resource "aws_autoscaling_group" "sina-asg" {
 #  health_check_type         = "ELB" ## to remove??
   desired_capacity          = 2
   force_delete              = true
-  placement_group           = aws_placement_group.sina_placement_group.id
-  launch_configuration      = aws_launch_template.sina-template.name
+  # placement_group           = aws_placement_group.sina_placement_group.id
+  # launch_configuration      = aws_launch_template.sina-template.name
   vpc_zone_identifier       = [aws_subnet.sina-private-subnet-1.id, aws_subnet.sina-private-subnet-2.id]
 
   timeouts {
@@ -171,8 +167,12 @@ resource "aws_autoscaling_group" "sina-asg" {
 
   launch_template {
     id      = "${aws_launch_template.sina-template.id}"
-    version = "$Latest"
   }
+}
+
+resource "aws_autoscaling_attachment" "asg_attachment_bar" {
+  autoscaling_group_name = aws_autoscaling_group.sina-asg.id
+  lb_target_group_arn    = aws_lb_target_group.sina-tg.arn
 }
 
 resource "aws_lb_target_group" "sina-tg" {
@@ -191,4 +191,13 @@ resource "aws_lb_listener" "sina-http-listener" {
     target_group_arn = aws_lb_target_group.sina-tg.arn
   }
 }
-# ROUTE TABLE ASSOCIATION
+
+resource "aws_route_table_association" "route-assoc-1" {
+  subnet_id      = aws_subnet.sina-public-subnet-1.id
+  route_table_id = aws_route_table.sina-route-table.id
+}
+
+resource "aws_route_table_association" "route-assoc-2" {
+  subnet_id      = aws_subnet.sina-public-subnet-1.id
+  route_table_id = aws_route_table.sina-route-table.id
+}
