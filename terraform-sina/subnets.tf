@@ -51,6 +51,6 @@ resource "aws_route_table_association" "route-assoc-1" {
 }
 
 resource "aws_route_table_association" "route-assoc-2" {
-  subnet_id      = aws_subnet.sina-public-subnet-1.id
+  subnet_id      = aws_subnet.sina-public-subnet-2.id
   route_table_id = aws_route_table.sina-route-table.id
 }

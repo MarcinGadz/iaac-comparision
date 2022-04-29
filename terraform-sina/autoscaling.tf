@@ -9,10 +9,18 @@ owners = ["814824721268"]
 }
 
 resource "aws_launch_template" "sina-template" {
-  name = "sina-template"
+  name_prefix = "sina-template"
   # ami           = latest-sinaami # Check
   image_id = data.aws_ami.latest-sinaami.id
   instance_type = "t2.micro"
+
+  vpc_security_group_ids = [aws_security_group.sina-sg.id]
+  tag_specifications {
+    resource_type = "instance"
+    tags = {
+      Name = "SinaASGInstance"
+    }
+  }
 }
 
 resource "aws_autoscaling_group" "sina-asg" {

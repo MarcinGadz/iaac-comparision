@@ -21,7 +21,6 @@ resource "aws_security_group" "sina-sg" {
     protocol         = "tcp"
     cidr_blocks      = ["0.0.0.0/0"]
     ipv6_cidr_blocks = ["::/0"]
-    # ipv6_cidr_blocks = [aws_vpc.sina_vpc.ipv6_cidr_block]
   }
 
   ingress {
@@ -31,7 +30,6 @@ resource "aws_security_group" "sina-sg" {
     protocol="tcp"
     cidr_blocks      = ["0.0.0.0/0"]
     ipv6_cidr_blocks = ["::/0"]
-    # ipv6_cidr_blocks = [aws_vpc.sina_vpc.ipv6_cidr_block]
   }
 
   egress {
@@ -44,7 +42,7 @@ resource "aws_security_group" "sina-sg" {
   }
 
   tags = {
-    Name = "Allow HTTPS/S"
+    Name = "Allow HTTP and HTTPS"
   }
 }
 
@@ -58,18 +56,6 @@ resource "aws_lb" "sina-lb" {
   enable_deletion_protection = false
 }
 
-resource "aws_autoscaling_attachment" "asg_attachment_bar" {
-  autoscaling_group_name = aws_autoscaling_group.sina-asg.id
-  lb_target_group_arn    = aws_lb_target_group.sina-tg.arn
-}
-
-resource "aws_lb_target_group" "sina-tg" {
-  name     = "sina-tg"
-  port     = 80
-  protocol = "HTTP"
-  vpc_id   = aws_vpc.sina_vpc.id
-}
-
 resource "aws_lb_listener" "sina-http-listener" {
   load_balancer_arn = aws_lb.sina-lb.arn
   port              = "80"
@@ -78,4 +64,15 @@ resource "aws_lb_listener" "sina-http-listener" {
     type             = "forward"
     target_group_arn = aws_lb_target_group.sina-tg.arn
   }
+}
+
+resource "aws_lb_target_group" "sina-tg" {
+  port     = 80
+  protocol = "HTTP"
+  vpc_id   = aws_vpc.sina_vpc.id
+}
+
+resource "aws_autoscaling_attachment" "asg_attachment_bar" {
+  autoscaling_group_name = aws_autoscaling_group.sina-asg.id
+  lb_target_group_arn    = aws_lb_target_group.sina-tg.arn
 }
